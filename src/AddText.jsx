@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask } from "./CounterSlice";
 import { deleteTask } from "./CounterSlice";
-import { editTask } from "./CounterSlice";
+import { editTask,updateEditedTask } from "./CounterSlice";
 
 function AddText() {
   const [inputText, setInputText] = useState("");
   const [text, setText] = useState("");
+  const [editedText,setEditedText] = useState('')
+  
 
   const dispatch = useDispatch();
   let tempDispalyArray = useSelector(function (state) {
@@ -21,6 +23,9 @@ function AddText() {
     return state.counter.isEdit;
   });
 
+  let editTask2 = useSelector(function(state){
+    return state.counter.editTask
+  })
   console.log(tempDispalyArray);
   // const [displayText, setDisplayText] = useState('');
   // let [check, setCheck] = useState(false);
@@ -48,6 +53,15 @@ function AddText() {
     // setInputText("");
   }
 
+  function handleEditChange(e){
+    setEditedText(e.target.value)
+  }
+
+  function handleUpdatedChanges(){
+dispatch(updateEditedTask(editedText))
+setEditedText('')
+  }
+
   return (
     <>
       <div>
@@ -62,13 +76,13 @@ function AddText() {
                 <div>
                   <input
                     type="text"
-                    value={check ? inputText : ""}
-                    onChange={(e) => handleChange(e)}
+                    value={editedText}
+                    onChange={(e) => handleEditChange(e)}
                     className="w-[65rem] h-[40px] color-gray border border-b-sky-600"
                   />
 
                   <button className="border-black   ml-[40px] text-1xl w-[124px] h-[39px] border  border-b-sky-600
-                  ">
+                  " onClick={()=>handleUpdatedChanges()}>
                     update
                   </button>
                 </div>
